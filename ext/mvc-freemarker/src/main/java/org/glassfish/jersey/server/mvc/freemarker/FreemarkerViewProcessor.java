@@ -99,6 +99,8 @@ final class FreemarkerViewProcessor extends AbstractTemplateProcessor<Template> 
                                    @Optional final ServletContext servletContext) {
         super(config, servletContext, "freemarker", "ftl");
 
+        final String encoding = getEncoding().name();
+
         this.factory = getTemplateObjectFactory(serviceLocator, Configuration.class, new Value<Configuration>() {
             @Override
             public Configuration get() {
@@ -117,6 +119,11 @@ final class FreemarkerViewProcessor extends AbstractTemplateProcessor<Template> 
                 // Create Factory.
                 final Configuration configuration = new Configuration();
                 configuration.setTemplateLoader(new MultiTemplateLoader(loaders.toArray(new TemplateLoader[loaders.size()])));
+
+                configuration.setDefaultEncoding(encoding);
+                configuration.setOutputEncoding(encoding);
+                configuration.setURLEscapingCharset(encoding);
+
                 return configuration;
             }
         });
